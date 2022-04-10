@@ -1,0 +1,6 @@
+{
+    "LinkType":"sukebei",
+    "APIlink":"https://nyaaapi.herokuapp.com/sukebei/user?user=rbot2000",
+    "RateLimit":150,
+    "ProgressDisplay":"Exact"
+}
