@@ -77,25 +77,39 @@ async function Main(apilink) {
             progressdisplay = 0
     }
 
+    switch (settings.LinkType.toLowerCase()) {
+        case "sukebei":
+            link = 0;
+            break;
+        case "torrent":
+            link = 1
+            break;
+        case "magnet":
+            link = 2
+            break;
+        default:
+            console.warn(`${"invalid Linktype".red}\n${"valid types : \"Sukebei\", \"Torrent\", \"Magnet\"".blue}\ndefaulting to Sukebei`)
+            settings.LinkType = "sukebei";
+            link = 0;
+    }
+
     filteredEntries.forEach((entry) => {
-        switch (settings.LinkType.toLowerCase()) {
-            case "sukebei":
-                link = entry.link
-                break;
-            case "torrent":
-                link = entry.torrent
-                break;
-            case "magnet":
-                link = entry.magnet
-                break;
-            default:
-                console.warn(`${"invalid Linktype".red}\n${"valid types : \"Sukebei\", \"Torrent\", \"Magnet\"".blue}\ndefaulting to Sukebei`)
-                link = entry.link;
-        }
+
         limiter.schedule(() => GetFilesArray(entry.link))
             .then((Files) => {
+                let link2
+                switch(link){
+                    case 0:
+                        link2 = entry.link;
+                    break;
+                    case 1:
+                        link2 = entry.torrent;
+                    break;
+                    case 2:
+                        link2 = entry.magnet;
+                }
                 Files.forEach((element) => {
-                    result = `${result}\n${element} - ${link}`;
+                    result = `${result}\n${element} - ${link2}`;
                 })
                 finishedentries++;
                 if(progressdisplay == 0){
